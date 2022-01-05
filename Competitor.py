@@ -22,6 +22,7 @@ data = []
 
 #page = requests.get('https://www.boozebud.com/browse-products?filtercontext=ttype&ttype=tspirits')
 options = Options()
+options.headless = True
 driver = webdriver.Chrome('C:\\Users\\Dipen\\webdriver\chromedriver.exe',options=options)
 driver.get('https://www.boozebud.com/browse-products?filtercontext=ttype&ttype=tspirits')
 time.sleep(2)
@@ -90,52 +91,6 @@ boozebud_spirits['name'] = name
 boozebud_spirits['bottle_price'] = bottle_price
 
 #---------------------------------------------------
-driver.get('https://www.boozebud.com/browse-products?filtercontext=ttype&ttype=tbeer')
-time.sleep(2)
-
-boozebud_beers = pd.DataFrame()
-scroll_to_bottom(driver)
-
-#Product=driver.find_elements_by_xpath('//*[@id="bb-content"]/div[2]/div[3]/div/div')
-Product = driver.find_elements_by_class_name('bb-grid--tile')
-url=[]
-name=[]
-bottle_price=[]
-case_price=[]
-can_price=[]
-for i in Product:
-    soup = BeautifulSoup(i.get_attribute('innerHTML'),'html.parser')
-    for a in soup.find_all("a"):
-        print('https://www.boozebud.com' + a['href'])
-        url.append('https://www.boozebud.com' + a['href'])
-    #products = 
-    for products in soup.find_all("div", class_="bb-product-tile--name"):
-        print(products.text)
-        name.append(products.text)
-    bprice = soup.find_all("div", class_="bb-variant--to")
-    bprice = bprice[1:2]
-    for i in bprice:
-        print(i.text)
-        bottle_price.append(i.text)
-    cprice = soup.find_all("div", class_="bb-variant--to")
-    if len(cprice) == 3:
-        cprice = cprice[2:3]
-        caprice = cprice[:1]
-        for i in cprice:
-            print(i.text)
-            case_price.append(i.text)
-    else:
-            case_price.append('0')
-            caprice.append('0')
-
-boozebud_beers['url'] = url
-boozebud_beers['case_price'] = case_price
-boozebud_beers = boozebud_beers.iloc[36:]
-boozebud_beers['name'] = name
-boozebud_beers['pack_price'] = bottle_price
-boozebud_beers['can_price'] = caprice
-
-#----------------------------------------------------------------
 
 
     
